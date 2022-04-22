@@ -6,6 +6,7 @@ body {
 }
 h1 {
   margin-bottom: 20px;
+  margin-top: 20px;
   font-weight: 900;
 }
 form {
@@ -35,7 +36,12 @@ button:hover {
   color: darkgreen;
 }
 ul {
+  display: grid;
+  grid-template-columns: auto auto;
   list-style: none;
+  width: 60%;
+  margin: auto;
+  margin-top: 40px;
 }
 .error {
   color: red;
@@ -44,6 +50,25 @@ ul {
   color: green;
   width: 200px;
   margin: auto;
-  border: 1px solid darkgreen;
+  border: 3px solid darkgreen;
+  margin-top: 40px;
   font-size: 25px;
+  background-color: rgb(222, 249, 222);
+}
+.rate-item {
+  background-color: rgb(224, 222, 222);
+  border: 1px solid black;
+  font-size: 18px;
+}
+.rate-item:nth-child(4n) {
+  background-color: darkgray;
+}
+.rate-item:nth-child(4n + 3) {
+  background-color: darkgray;
+}
+.rate-item span {
+  color: black;
+}
+.hidden {
+  display: none;
 }

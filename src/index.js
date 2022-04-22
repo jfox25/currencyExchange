@@ -55,8 +55,12 @@ async function getData(amount, userCode, output) {
 }
 function displayRates(values, output, userCode) {
   values.forEach((value) => {
-    $(output).append(`<li class='rate-item'>${value[0]}: $${value[1]}`);
+    $("#output-title").removeClass("hidden");
+    $(output).append(
+      `<li class='rate-item'><span>${value[0]}:</span> $${value[1]}`
+    );
     if (value[0] === userCode) {
+      $("#target-output").removeClass("hidden");
       $("#target-output").text(`${value[0]}: $${value[1]}`);
     }
   });
