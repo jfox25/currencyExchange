@@ -3,7 +3,7 @@ export class ApiCall {
     return fetch(url)
       .then(function (response) {
         if (!response.ok) {
-          throw Error(response.statusText);
+          throw Error(response.status);
         }
         return response.json();
       })
@@ -11,13 +11,9 @@ export class ApiCall {
         return error;
       });
   }
-  static storeData(data) {
-    sessionStorage.setItem(`Currencies`, JSON.stringify(data.conversion_rates));
-  }
   static async getData() {
     const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
     if (sessionStorage.getItem(`Currencies`) !== null) {
-      console.log("Using cashing");
       const stringData = sessionStorage.getItem(`Currencies`);
       return JSON.parse(stringData);
     } else {
@@ -25,7 +21,10 @@ export class ApiCall {
       if (response instanceof Error) {
         return response;
       } else {
-        ApiCall.storeData(response);
+        sessionStorage.setItem(
+          `Currencies`,
+          JSON.stringify(response.conversion_rates)
+        );
         return response.conversion_rates;
       }
     }

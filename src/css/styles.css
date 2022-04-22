@@ -17,10 +17,12 @@ form {
 input {
   width: 80px;
   background-color: rgb(222, 249, 222);
+  color: darkgreen;
 }
 select {
   background-color: rgb(222, 249, 222);
   padding: 3px;
+  color: darkgreen;
 }
 button {
   padding: 5px;
@@ -34,6 +36,7 @@ button:hover {
   background-color: rgb(222, 249, 222);
   border: 2px solid darkgreen;
   color: darkgreen;
+  cursor: pointer;
 }
 ul {
   display: grid;
@@ -48,7 +51,7 @@ ul {
 }
 #target-output {
   color: green;
-  width: 200px;
+  width: 300px;
   margin: auto;
   border: 3px solid darkgreen;
   margin-top: 40px;
@@ -61,10 +64,10 @@ ul {
   font-size: 18px;
 }
 .rate-item:nth-child(4n) {
-  background-color: darkgray;
+  background-color: rgb(191, 189, 189);
 }
 .rate-item:nth-child(4n + 3) {
-  background-color: darkgray;
+  background-color: rgb(191, 189, 189);
 }
 .rate-item span {
   color: black;

@@ -1,6 +1,4 @@
 import $ from "jquery";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/styles.css";
 import { ApiCall } from "./js/utility";
 import { Currency } from "./js/currency";
@@ -8,7 +6,7 @@ function errorHandling(element, response) {
   if (response instanceof Error) {
     $(element).text("");
     $(element).append(
-      `<p class='error'>There was an error getting this data from api<p><p class='error'>Error Code:${response.statusCode}`
+      `<p class='error'>There was an error getting this data from api<p><p class='error'>${response}`
     );
     return true;
   } else {
@@ -31,15 +29,19 @@ function userValidation(rates, userCode, output) {
   }
 }
 async function buildSelects() {
+  const output = $("#output");
   const rates = await ApiCall.getData();
-  const codes = Currency.getCurrencyCodes(rates);
-  for (let i = 0; i < codes.length; i++) {
-    $("#from-code-select").append(
-      `<option val='${codes[i]}'>${codes[i]}</option>`
-    );
-    $("#target-code-select").append(
-      `<option val='${codes[i]}'>${codes[i]}</option>`
-    );
+  const isError = errorHandling(output, rates);
+  if (!isError) {
+    const codes = Currency.getCurrencyCodes(rates);
+    for (let i = 0; i < codes.length; i++) {
+      $("#from-code-select").append(
+        `<option val='${codes[i]}'>${codes[i]}</option>`
+      );
+      $("#target-code-select").append(
+        `<option val='${codes[i]}'>${codes[i]}</option>`
+      );
+    }
   }
 }
 async function getData(amount, userCode, output) {
@@ -70,7 +72,7 @@ $(document).ready(function () {
   $("#currency-form").submit(function (event) {
     event.preventDefault();
     const code = $("#from-code-select").val();
-    const amount = parseInt($("#amount-input").val());
+    const amount = Math.abs(parseInt($("#amount-input").val()));
     const output = $("#output");
     $(output).text("");
     getData(amount, code, output);
