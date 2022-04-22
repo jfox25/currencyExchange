@@ -23,11 +23,11 @@ Creating a Key
 
 1. Go to [Exchange Rate API](https://www.exchangerate-api.com/)
 
-2.Click on the Get A Key button.
+2. Click on the Get A Key button.
 
-3.Create a free account.
+3. Create a free account.
 
-4.View your key!
+4. View your key!
 
 Setting up the Project
 
