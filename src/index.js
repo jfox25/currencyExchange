@@ -30,20 +30,30 @@ function userValidation(rates, userCode, output) {
     return true;
   }
 }
-async function getData(amount, url, userCode, output) {
-  const rates = await ApiCall.getData(url);
+async function buildSelects() {
+  const rates = await ApiCall.getData();
+  const codes = Currency.getCurrencyCodes(rates);
+  for (let i = 0; i < codes.length; i++) {
+    $("#from-code-select").append(
+      `<option val='${codes[i]}'>${codes[i]}</option>`
+    );
+    $("#target-code-select").append(
+      `<option val='${codes[i]}'>${codes[i]}</option>`
+    );
+  }
+}
+async function getData(amount, userCode, output, targetCode) {
+  const rates = await ApiCall.getData();
   const isValidationError = userValidation(rates, userCode, output);
-  if (!isValidationError) {
+  const isValidationErrorTarget = userValidation(rates, targetCode, output);
+  if (!isValidationError && !isValidationErrorTarget) {
     const isError = errorHandling(output, rates);
     if (!isError) {
       const values = Currency.calculateRates(rates, amount);
+      console.log(values);
       displayRates(values, output);
     }
   }
-}
-function clearFields(output) {
-  $(output).text("");
-  $("#amount-input").val("");
 }
 function displayRates(values, element) {
   values.forEach((value) => {
@@ -51,13 +61,14 @@ function displayRates(values, element) {
   });
 }
 $(document).ready(function () {
+  buildSelects();
   $("#currency-form").submit(function (event) {
     event.preventDefault();
-    const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
-    const code = $("#code-select").val();
+    const code = $("#from-code-select").val();
+    const targetCode = $("#target-code-select").val();
     const amount = parseInt($("#amount-input").val());
     const output = $("#output");
-    clearFields(output);
-    getData(amount, url, code, output);
+    $(output).text("");
+    getData(amount, code, output, targetCode);
   });
 });
