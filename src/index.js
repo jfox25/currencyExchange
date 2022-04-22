@@ -42,22 +42,23 @@ async function buildSelects() {
     );
   }
 }
-async function getData(amount, userCode, output, targetCode) {
+async function getData(amount, userCode, output) {
   const rates = await ApiCall.getData();
   const isValidationError = userValidation(rates, userCode, output);
-  const isValidationErrorTarget = userValidation(rates, targetCode, output);
-  if (!isValidationError && !isValidationErrorTarget) {
+  if (!isValidationError) {
     const isError = errorHandling(output, rates);
     if (!isError) {
       const values = Currency.calculateRates(rates, amount);
-      console.log(values);
-      displayRates(values, output);
+      displayRates(values, output, userCode);
     }
   }
 }
-function displayRates(values, element) {
+function displayRates(values, output, userCode) {
   values.forEach((value) => {
-    $(element).append(`<li class='rate-item'>${value[0]}: ${value[1]}`);
+    $(output).append(`<li class='rate-item'>${value[0]}: ${value[1]}`);
+    if (value[0] === userCode) {
+      $("#target-output").text(`${value[0]}: ${value[1]}`);
+    }
   });
 }
 $(document).ready(function () {
@@ -65,10 +66,9 @@ $(document).ready(function () {
   $("#currency-form").submit(function (event) {
     event.preventDefault();
     const code = $("#from-code-select").val();
-    const targetCode = $("#target-code-select").val();
     const amount = parseInt($("#amount-input").val());
     const output = $("#output");
     $(output).text("");
-    getData(amount, code, output, targetCode);
+    getData(amount, code, output);
   });
 });

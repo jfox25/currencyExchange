@@ -1,3 +1,5 @@
+// import { ApiCall } from "./js/utility";
+
 export class Currency {
   static calculateRates(rates, amount) {
     const valueArray = [];
@@ -13,4 +15,15 @@ export class Currency {
     });
     return codeArray;
   }
+  // static async calculateSpecificRate(userRate, targetRate, rates, ammount) {
+  //   let userRateValue;
+  //   let targetRateValue;
+  //   Object.keys(rates).forEach((key) => {
+  //     if (key === userRate) {
+  //       userRateValue = rates[key];
+  //     } else if (key === targetRate) {
+  //       targetRateValue = rates[key];
+  //     }
+  //   });
+  // }
 }

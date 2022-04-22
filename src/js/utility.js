@@ -12,13 +12,13 @@ export class ApiCall {
       });
   }
   static storeData(data) {
-    sessionStorage.setItem("Currencies", JSON.stringify(data.conversion_rates));
+    sessionStorage.setItem(`Currencies`, JSON.stringify(data.conversion_rates));
   }
   static async getData() {
     const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
-    if (sessionStorage.getItem("Currencies") !== null) {
+    if (sessionStorage.getItem(`Currencies`) !== null) {
       console.log("Using cashing");
-      const stringData = sessionStorage.getItem("Currencies");
+      const stringData = sessionStorage.getItem(`Currencies`);
       return JSON.parse(stringData);
     } else {
       const response = await ApiCall.get(url);
