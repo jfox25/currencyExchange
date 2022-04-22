@@ -1,25 +1,21 @@
-class ApiCall {
-  static async get(url) {
-    await fetch(url)
+export class ApiCall {
+  static get(url) {
+    return fetch(url)
       .then(function (response) {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        let isStored = storeData(response.json());
-        return isStored;
+        return response.json();
       })
       .catch(function (error) {
         return error;
       });
   }
-  storeData(response) {
-    sessionStorage.setItem("Currencies", JSON.stringify(response));
-    if (sessionStorage.getItem("Currencies")) {
-      return true;
-    }
-    return false;
+  static storeData(data) {
+    sessionStorage.setItem("Currencies", JSON.stringify(data.conversion_rates));
   }
-  getData() {
-    return sessionStorage.getItem("Currencies");
+  static getData() {
+    const stringData = sessionStorage.getItem("Currencies");
+    return JSON.parse(stringData);
   }
 }
