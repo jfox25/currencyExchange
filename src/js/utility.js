@@ -21,8 +21,12 @@ export class ApiCall {
       return JSON.parse(stringData);
     } else {
       const response = await ApiCall.get(url);
-      ApiCall.storeData(response);
-      return response.conversion_rates;
+      if (response instanceof Error) {
+        return response;
+      } else {
+        ApiCall.storeData(response);
+        return response.conversion_rates;
+      }
     }
   }
 }
