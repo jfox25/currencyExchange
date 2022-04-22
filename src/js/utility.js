@@ -14,8 +14,15 @@ export class ApiCall {
   static storeData(data) {
     sessionStorage.setItem("Currencies", JSON.stringify(data.conversion_rates));
   }
-  static getData() {
-    const stringData = sessionStorage.getItem("Currencies");
-    return JSON.parse(stringData);
+  static async getData(url) {
+    if (sessionStorage.getItem("Currencies") !== null) {
+      console.log("Using cashing");
+      const stringData = sessionStorage.getItem("Currencies");
+      return JSON.parse(stringData);
+    } else {
+      const response = await ApiCall.get(url);
+      ApiCall.storeData(response);
+      return response.conversion_rates;
+    }
   }
 }

@@ -1,7 +1,9 @@
 export class Currency {
-  static calculateRates(rates, value) {
+  static calculateRates(rates, amount) {
+    const valueArray = [];
     Object.keys(rates).forEach((key) => {
-      console.log(key, rates[key]);
+      valueArray.push([key, parseInt(rates[key]) * amount]);
     });
+    return valueArray;
   }
 }
