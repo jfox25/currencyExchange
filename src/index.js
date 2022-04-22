@@ -15,19 +15,37 @@ function errorHandling(element, response) {
     return false;
   }
 }
-async function getData(amount) {
-  const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
-  const rates = await ApiCall.getData(url);
-  const output = $("#output");
+function userValidation(rates, userCode, output) {
   const isError = errorHandling(output, rates);
   if (!isError) {
-    const values = Currency.calculateRates(rates, amount);
-    displayRates(values, output);
+    const codes = Currency.getCurrencyCodes(rates);
+    console.log(codes);
+    for (let i = 0; i < codes.length; i++) {
+      if (codes[i] === userCode) {
+        return false;
+      }
+    }
+    $(output).append(
+      "<p class='error'>This currency code is not supported, please enter a supported code<p>"
+    );
+    return true;
   }
-  console.log(rates);
 }
-function clearFields() {
-  $("#output").text("");
+async function getData(amount, url, userCode, output) {
+  const rates = await ApiCall.getData(url);
+  const isValidationError = userValidation(rates, userCode, output);
+  console.log(isValidationError);
+  if (!isValidationError) {
+    const isError = errorHandling(output, rates);
+    if (!isError) {
+      const values = Currency.calculateRates(rates, amount);
+      console.log(values);
+      displayRates(values, output);
+    }
+  }
+}
+function clearFields(output) {
+  $(output).text("");
   $("#amount-input").val("");
 }
 function displayRates(values, element) {
@@ -38,9 +56,11 @@ function displayRates(values, element) {
 $(document).ready(function () {
   $("#currency-form").submit(function (event) {
     event.preventDefault();
-    // const code = $("#code-select").val();
+    const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
+    const code = $("#code-select").val();
     const amount = parseInt($("#amount-input").val());
-    clearFields();
-    getData(amount);
+    const output = $("#output");
+    clearFields(output);
+    getData(amount, url, code, output);
   });
 });

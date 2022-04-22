@@ -6,4 +6,11 @@ export class Currency {
     });
     return valueArray;
   }
+  static getCurrencyCodes(rates) {
+    const codeArray = [];
+    Object.keys(rates).forEach((key) => {
+      codeArray.push(key);
+    });
+    return codeArray;
+  }
 }
