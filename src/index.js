@@ -19,7 +19,6 @@ function userValidation(rates, userCode, output) {
   const isError = errorHandling(output, rates);
   if (!isError) {
     const codes = Currency.getCurrencyCodes(rates);
-    console.log(codes);
     for (let i = 0; i < codes.length; i++) {
       if (codes[i] === userCode) {
         return false;
@@ -34,12 +33,10 @@ function userValidation(rates, userCode, output) {
 async function getData(amount, url, userCode, output) {
   const rates = await ApiCall.getData(url);
   const isValidationError = userValidation(rates, userCode, output);
-  console.log(isValidationError);
   if (!isValidationError) {
     const isError = errorHandling(output, rates);
     if (!isError) {
       const values = Currency.calculateRates(rates, amount);
-      console.log(values);
       displayRates(values, output);
     }
   }
